@@ -35,10 +35,21 @@ const AddProduct = (props) => {
     }
   }, [product]);
 
+  useEffect(() => {
+    setFromData({
+        name: "",
+        unit: "",
+        category: "",
+        expiry: "",
+        totalCost: 0,
+        listOfMaterials: [],
+      });
+  },[]);
+
   return (
     <>
       <h2>Add Or Update Product</h2>
-      {!product ? (
+      {!formData ? (
         <div>Loading....</div>
       ) : (
         <form>
@@ -49,7 +60,7 @@ const AddProduct = (props) => {
             name="productname"
             id="productname"
             style={{ marginBottom: "10px" }}
-            value={product.name}
+            value={formData.name}
           />
           <br />
           <label htmlFor="unit">Select Unit</label>
@@ -58,7 +69,7 @@ const AddProduct = (props) => {
             name="unit"
             id="unit"
             style={{ marginBottom: "10px" }}
-            value={product.unit}
+            value={formData.unit}
           >
             <option value="ml">mililiter</option>
             <option value="liter">liter</option>
@@ -72,7 +83,7 @@ const AddProduct = (props) => {
             name="category"
             id="category"
             style={{ marginBottom: "10px" }}
-            value={product.category}
+            value={formData.category}
           >
             <option value="Finished">Finished</option>
             <option value="Semi Finished">Semi Finished</option>
@@ -86,16 +97,16 @@ const AddProduct = (props) => {
             name="productexpiry"
             id="productexpiry"
             style={{ marginBottom: "10px" }}
-            value={product.value}
+            value={formData.date}
           />
           <br />
           <label htmlFor="totalcost">Total Cost</label>
           <br />
-          <input type="number" name="totalcost" id="totalcost" value={product.totalCost}/>
+          <input type="number" name="totalcost" id="totalcost" value={formData.totalCost}/>
           <br />
           <label htmlFor="material">material</label>
           <br />
-          <input type="text" name="material" id="material" />
+          <input type="text" name="material" id="material"  />
           <br />
           <br />
           <button type="button">Submit</button>
