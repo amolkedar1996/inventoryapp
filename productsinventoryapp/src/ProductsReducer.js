@@ -5,7 +5,7 @@ const initialState = {
       name: "Oats",
       unit: "kg",
       category: "Finished",
-      expiry: "20/08/25",
+      expiry: "2025-10-20",
       totalCost: 500,
       listOfMaterials: ["wheat", "seeds", "salt"],
     },
@@ -13,7 +13,7 @@ const initialState = {
       id: 2,
       name: "Breads",
       unit: "gm",
-      category: "Semi finished",
+      category: "Semi Finished",
       expiry: "15/04/25",
       totalCost: 200,
       listOfMaterials: ["wheat", "maida", "salt"],
@@ -22,7 +22,7 @@ const initialState = {
       id: 3,
       name: "Maggie",
       unit: "kg",
-      category: "Semi finished",
+      category: "Semi Finished",
       expiry: "10/05/25",
       totalCost: 350,
       listOfMaterials: ["maida", "salt", "peppers"],
@@ -108,13 +108,19 @@ const initialState = {
       taxAmount: 40,
       totalAmount: 290,
     },
-  ],
+  ]
 };
 
 const ProductsReducer = (state = initialState, action) => {
-  switch (action) {
+  switch (action.type) {
     case "GET_PRODUCTS_LIST":
-      return state.products;
+      return state;
+
+    case "GET_PRODUCT":
+      console.log("get product",action.payload);
+      const [product] = state.products?.filter((product,ind) => product.id == action.payload);
+      console.log("product",product);
+      return {...state,product:product};
 
     default:
       return state;

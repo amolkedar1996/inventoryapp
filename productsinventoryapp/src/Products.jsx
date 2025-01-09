@@ -4,14 +4,15 @@ import { getProductsList } from "./Actions";
 import { useNavigate ,Link} from "react-router-dom";
 
 const Products = (props) => {
- 
-    const navigate = useNavigate();
+
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const products = useSelector((state) => {
-    return state.ProductsReducer.products;
+
+  const products= useSelector((state) => {
+    return state?.ProductsReducer?.products;
+
   });
 
-  console.log("products", products);
   useEffect(() => {
     dispatch(getProductsList());
   }, []);
@@ -19,6 +20,7 @@ const Products = (props) => {
   const handleAddProduct = () => {
     navigate("/product/add")
   }
+
 
   return (
     <>
