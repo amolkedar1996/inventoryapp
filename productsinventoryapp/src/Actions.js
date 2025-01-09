@@ -4,7 +4,6 @@ export const getProductsList = () => {
 }
 
 export const addProduct = (data) => {
-
     return {type:"ADD_PRODUCT",payload:data}
 }
 
@@ -13,6 +12,5 @@ export const getProduct = (id) => {
 }
 
 export const updateProduct = (id,data) => {
-
     return {type:"UPDATE_PRODUCT",payload:{id,data}}
 }

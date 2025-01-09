@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { addProduct, updateProduct, getProduct } from "./Actions";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -14,10 +14,15 @@ const AddProduct = (props) => {
   });
   const { id } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const product = useSelector((state) => state.ProductsReducer.product);
-  console.log("product..", product);
+  
 
+  const rawMaterials = useSelector(
+    (state) => state.ProductsReducer.rawMaterials
+  );
+  
   useEffect(() => {
     dispatch(getProduct(id));
   }, [id, dispatch]);
@@ -37,15 +42,30 @@ const AddProduct = (props) => {
 
   useEffect(() => {
     setFromData({
-        name: "",
-        unit: "",
-        category: "",
-        expiry: "",
-        totalCost: 0,
-        listOfMaterials: [],
-      });
-  },[]);
+      name: "",
+      unit: "",
+      category: "",
+      expiry: "",
+      totalCost: 0,
+      listOfMaterials: [],
+    });
+  }, []);
 
+  const handleChange = (e) => {
+    
+    if (e.target.name == "listOfMaterials") {
+      setFromData({ ...formData, [e.target.name]: [e.target.value] });
+    } else {
+      setFromData({ ...formData, [e.target.name]: e.target.value });
+    }
+  };
+
+  const handleSubmit = (e) => {
+    dispatch(addProduct(formData));
+    setTimeout(() => {
+      navigate("/");
+    }, 1000);
+  };
   return (
     <>
       <h2>Add Or Update Product</h2>
@@ -57,10 +77,11 @@ const AddProduct = (props) => {
           <br />
           <input
             type="text"
-            name="productname"
+            name="name"
             id="productname"
             style={{ marginBottom: "10px" }}
             value={formData.name}
+            onChange={handleChange}
           />
           <br />
           <label htmlFor="unit">Select Unit</label>
@@ -70,6 +91,7 @@ const AddProduct = (props) => {
             id="unit"
             style={{ marginBottom: "10px" }}
             value={formData.unit}
+            onChange={handleChange}
           >
             <option value="ml">mililiter</option>
             <option value="liter">liter</option>
@@ -84,6 +106,7 @@ const AddProduct = (props) => {
             id="category"
             style={{ marginBottom: "10px" }}
             value={formData.category}
+            onChange={handleChange}
           >
             <option value="Finished">Finished</option>
             <option value="Semi Finished">Semi Finished</option>
@@ -94,22 +117,41 @@ const AddProduct = (props) => {
           <br />
           <input
             type="date"
-            name="productexpiry"
+            name="expiry"
             id="productexpiry"
             style={{ marginBottom: "10px" }}
-            value={formData.date}
+            value={formData.expiry}
+            onChange={handleChange}
           />
           <br />
           <label htmlFor="totalcost">Total Cost</label>
           <br />
-          <input type="number" name="totalcost" id="totalcost" value={formData.totalCost}/>
+          <input
+            type="number"
+            name="totalCost"
+            id="totalcost"
+            value={formData.totalCost}
+            onChange={handleChange}
+          />
           <br />
           <label htmlFor="material">material</label>
           <br />
-          <input type="text" name="material" id="material"  />
+          <select
+            name="listOfMaterials"
+            multiple
+            value={formData.listOfMaterials}
+            style={{ height: "200px" }}
+            onChange={handleChange}
+          >
+            {rawMaterials?.map((material, ind) => {
+              return <option value={material.name}>{material.name}</option>;
+            })}
+          </select>
           <br />
           <br />
-          <button type="button">Submit</button>
+          <button type="button" onClick={handleSubmit}>
+            Submit
+          </button>
         </form>
       )}
     </>
